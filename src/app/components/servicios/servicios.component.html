@@ -1,7 +1,7 @@
 <h3>{{Titulo}} <small>{{TituloAccionABMC[AccionABMC]}}</small></h3>
 
 <!-- Formulario Filtro de busqueda, se ve cuando la accion es Listado(busqueda/listado)-->
-<!-- <form name="FormFiltro" [formGroup]='FormFiltro' class="bg-light" *ngIf="AccionABMC == 'L'" >
+<form name="FormFiltro" [formGroup]='FormFiltro' class="bg-light" *ngIf="AccionABMC == 'L'" >
 	<div class="form-group row">
 		<label class="col-form-label col-sm-2 col-sm-offset-1">
             Nombre:
@@ -19,7 +19,7 @@
             <option>            
           </select>
 			</div>
-		</div> -->
+		</div>
 		<!-- Botones -->
 		<div class="row justify-content-center">
 			<button type="button" class="btn btn-primary" (click)="Buscar()">
@@ -175,7 +175,7 @@
 		</div>
 
 		<!--campo idarticulofamilia-->
-		<div class="form-group row">
+		<!-- <div class="form-group row">
 			<label class="col-form-label col-sm-2 col-sm-offset-2" for="IdArticuloFamilia">
                 Familia <span class="text-danger">*</span>
             </label>
@@ -192,7 +192,7 @@
                     Dato requerido.
                 </span>
 			</div>
-		</div>
+		</div> -->
 
 		<!--campo fechaalta-->
 		<div class="form-group row">
