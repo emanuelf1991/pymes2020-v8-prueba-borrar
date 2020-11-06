@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { Articulo } from "../../models/articulo";
 import { ArticuloFamilia } from "../../models/articulo-familia";
 import { ArticulosService } from "../../services/articulos.service";
 import { ArticulosFamiliasService } from "../../services/articulos-familias.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ModalDialogService } from "../../services/modal-dialog.service";
+import { Cliente } from "../../models/cliente";
+import { ClienteService } from "../../services/cliente.service"
 
 
 @Component({
@@ -27,9 +28,9 @@ Titulo = "Clientes";
     RD: " Revisar los datos ingresados..."
   };
 
-  Lista: Articulo[] = [];
+  Lista: Cliente[] = [];
   RegistrosTotal: number;
-  Familias: ArticuloFamilia[] = [];
+  //Familias: ArticuloFamilia[] = [];
   SinBusquedasRealizadas = true;
 
   Pagina = 1; // inicia pagina 1
@@ -51,7 +52,8 @@ Titulo = "Clientes";
     //private articulosFamiliasService: MockArticulosFamiliasService,
     private articulosService: ArticulosService,
     private articulosFamiliasService: ArticulosFamiliasService,
-    private modalDialogService: ModalDialogService
+    private modalDialogService: ModalDialogService,
+    private clientesService: ClienteService,
   ) {}
 
   ngOnInit() {
@@ -60,38 +62,39 @@ Titulo = "Clientes";
       Activo: [true]
     });
     this.FormReg = this.formBuilder.group({
-      IdArticulo: [0],
+      IdCliente: [0],
       Nombre: [
         "",
         [Validators.required, Validators.minLength(4), Validators.maxLength(55)]
       ],
-      Precio: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
-      Stock: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
-      CodigoDeBarra: [
-        "",
-        [Validators.required, Validators.pattern("[0-9]{13}")]
-      ],
-      IdArticuloFamilia: ["", [Validators.required]],
-      FechaAlta: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(
-            "(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[012])[-/](19|20)[0-9]{2}"
-          )
-        ]
-      ],
+      NumeroDocumento: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
+      TieneTrabajo: [null],
+      // Stock: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
+      // CodigoDeBarra: [
+      //   "",
+      //   [Validators.required, Validators.pattern("[0-9]{13}")]
+      // ],
+      // IdArticuloFamilia: ["", [Validators.required]],
+      // FechaAlta: [
+      //   "",
+      //   [
+      //     Validators.required,
+      //     Validators.pattern(
+      //       "(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[012])[-/](19|20)[0-9]{2}"
+      //     )
+      //   ]
+      // ],
       Activo: [true]
     });
 
-    this.GetFamiliasArticulos();
+    //this.GetFamiliasArticulos();
   }
 
-  GetFamiliasArticulos() {
-    this.articulosFamiliasService.get().subscribe((res: ArticuloFamilia[]) => {
-      this.Familias = res;
-    });
-  }
+  // GetFamiliasArticulos() {
+  //   this.articulosFamiliasService.get().subscribe((res: ArticuloFamilia[]) => {
+  //     this.Familias = res;
+  //   });
+  // }
 
   Agregar() {
     this.AccionABMC = "A";
@@ -104,52 +107,46 @@ Titulo = "Clientes";
   // Buscar segun los filtros, establecidos en FormReg
   Buscar() {
     this.SinBusquedasRealizadas = false;
-    this.articulosService
-      .get(
-        this.FormFiltro.value.Nombre,
-        this.FormFiltro.value.Activo,
-        this.Pagina
-      )
-      .subscribe((res: any) => {
+    this.clientesService.get().subscribe((res: any) => {
         this.Lista = res.Lista;
         this.RegistrosTotal = res.RegistrosTotal;
       });
   }
 
   // Obtengo un registro especifico según el Id
-  BuscarPorId(Dto, AccionABMC) {
-    window.scroll(0, 0); // ir al incio del scroll
+  // BuscarPorId(Dto, AccionABMC) {
+  //   window.scroll(0, 0); // ir al incio del scroll
 
-    this.articulosService.getById(Dto.IdArticulo).subscribe((res: any) => {
-      this.FormReg.patchValue(res);
+  //   this.articulosService.getById(Dto.IdArticulo).subscribe((res: any) => {
+  //     this.FormReg.patchValue(res);
 
-      //formatear fecha de  ISO 8061 a string dd/MM/yyyy
-      var arrFecha = res.FechaAlta.substr(0, 10).split("-");
-      this.FormReg.controls.FechaAlta.patchValue(
-        arrFecha[2] + "/" + arrFecha[1] + "/" + arrFecha[0]
-      );
+  //     //formatear fecha de  ISO 8061 a string dd/MM/yyyy
+  //     var arrFecha = res.FechaAlta.substr(0, 10).split("-");
+  //     this.FormReg.controls.FechaAlta.patchValue(
+  //       arrFecha[2] + "/" + arrFecha[1] + "/" + arrFecha[0]
+  //     );
 
-      this.AccionABMC = AccionABMC;
-    });
-  }
+  //     this.AccionABMC = AccionABMC;
+  //   });
+  // }
 
-  Consultar(Dto) {
-    this.BuscarPorId(Dto, "C");
-  }
+  // Consultar(Dto) {
+  //   this.BuscarPorId(Dto, "C");
+  // }
 
   // comienza la modificacion, luego la confirma con el metodo Grabar
-  Modificar(Dto) {
-    if (!Dto.Activo) {
-      this.modalDialogService.Alert(
-        "No puede modificarse un registro Inactivo."
-      );
-      return;
-    }
-    this.submitted = false;
-    this.FormReg.markAsPristine();
-    this.FormReg.markAsUntouched();
-    this.BuscarPorId(Dto, "M");
-  }
+  // Modificar(Dto) {
+  //   if (!Dto.Activo) {
+  //     this.modalDialogService.Alert(
+  //       "No puede modificarse un registro Inactivo."
+  //     );
+  //     return;
+  //   }
+  //   this.submitted = false;
+  //   this.FormReg.markAsPristine();
+  //   this.FormReg.markAsUntouched();
+  //   this.BuscarPorId(Dto, "M");
+  // }
 
   // grabar tanto altas como modificaciones
   Grabar() {
@@ -163,50 +160,50 @@ Titulo = "Clientes";
     const itemCopy = { ...this.FormReg.value };
 
     //convertir fecha de string dd/MM/yyyy a ISO para que la entienda webapi
-    var arrFecha = itemCopy.FechaAlta.substr(0, 10).split("/");
-    if (arrFecha.length == 3)
-      itemCopy.FechaAlta = new Date(
-        arrFecha[2],
-        arrFecha[1] - 1,
-        arrFecha[0]
-      ).toISOString();
+    // var arrFecha = itemCopy.FechaAlta.substr(0, 10).split("/");
+    // if (arrFecha.length == 3)
+    //   itemCopy.FechaAlta = new Date(
+    //     arrFecha[2],
+    //     arrFecha[1] - 1,
+    //     arrFecha[0]
+    //   ).toISOString();
 
     // agregar post
-    if (itemCopy.IdArticulo == 0 || itemCopy.IdArticulo == null) {
-      itemCopy.IdArticulo = 0;
-      this.articulosService.post(itemCopy).subscribe((res: any) => {
+    if (itemCopy.IdCliente == 0 || itemCopy.IdCliente == null) {
+      itemCopy.IdCliente = 0;
+      this.clientesService.post(itemCopy).subscribe((res: any) => {
         this.Volver();
         this.modalDialogService.Alert("Registro agregado correctamente.");
         this.Buscar();
       });
     } else {
       // modificar put
-      this.articulosService
-        .put(itemCopy.IdArticulo, itemCopy)
-        .subscribe((res: any) => {
-          this.Volver();
-          this.modalDialogService.Alert("Registro modificado correctamente.");
-          this.Buscar();
-        });
+      // this.articulosService
+      //   .put(itemCopy.IdArticulo, itemCopy)
+      //   .subscribe((res: any) => {
+      //     this.Volver();
+      //     this.modalDialogService.Alert("Registro modificado correctamente.");
+      //     this.Buscar();
+      //   });
     }
   }
 
   // representa la baja logica
-  ActivarDesactivar(Dto) {
-    this.modalDialogService.Confirm(
-      "Esta seguro de " +
-        (Dto.Activo ? "desactivar" : "activar") +
-        " este registro?",
-      undefined,
-      undefined,
-      undefined,
-      () =>
-        this.articulosService
-          .delete(Dto.IdArticulo)
-          .subscribe((res: any) => this.Buscar()),
-      null
-    );
-  }
+  // ActivarDesactivar(Dto) {
+  //   this.modalDialogService.Confirm(
+  //     "Esta seguro de " +
+  //       (Dto.Activo ? "desactivar" : "activar") +
+  //       " este registro?",
+  //     undefined,
+  //     undefined,
+  //     undefined,
+  //     () =>
+  //       this.articulosService
+  //         .delete(Dto.IdArticulo)
+  //         .subscribe((res: any) => this.Buscar()),
+  //     null
+  //   );
+  // }
 
   // Volver desde Agregar/Modificar
   Volver() {
@@ -217,11 +214,11 @@ Titulo = "Clientes";
     this.modalDialogService.Alert("Sin desarrollar...");
   }
 
-  GetArticuloFamiliaNombre(Id) {
-    var ArticuloFamilia = this.Familias.filter(
-      x => x.IdArticuloFamilia === Id
-    )[0];
-    if (ArticuloFamilia) return ArticuloFamilia.Nombre;
-    else return "";
-  }
+  // GetArticuloFamiliaNombre(Id) {
+  //   var ArticuloFamilia = this.Familias.filter(
+  //     x => x.IdArticuloFamilia === Id
+  //   )[0];
+  //   if (ArticuloFamilia) return ArticuloFamilia.Nombre;
+  //   else return "";
+  // }
 }
