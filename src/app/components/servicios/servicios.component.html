@@ -46,11 +46,11 @@
 		</thead>
 		<tbody>
 			<tr *ngFor="let dto of Lista">
-				<td>{{dto.idservicio }}</td>
-        <td>{{dto.descripcion | uppercase}}</td>
-        <td class="text-right">{{dto.Precio | currency:'$'}}</td>
-				<td class="text-right">{{dto.Stock}}</td>
-				<td class="text-center text-nowrap">
+				<td>{{dto.IdServicio }}</td>
+        <td>{{dto.Descripcion | uppercase}}</td>
+        <td class="text-right">{{dto.Importe | currency:'$'}}</td>
+				<td class="text-right">{{dto.CantidadHoras}}</td>
+				<!-- <td class="text-center text-nowrap"> -->
 					<!-- <button type="button" class="btn btn-sm btn-outline-primary" title="Ver" (click)="Consultar(dto)">
                     <span class="fas fa-eye"></span>
                 </button>

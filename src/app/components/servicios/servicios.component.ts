@@ -51,34 +51,18 @@ export class ServiciosComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.FormFiltro = this.formBuilder.group({
-    //   Nombre: [""],
-    //   Activo: [true]
-    // });
+  this.FormFiltro = this.formBuilder.group({
+      Descripcion: [""],
+      Activo: [null]
+    });
     this.FormReg = this.formBuilder.group({
-      // IdArticulo: [0],
-      
-        IdServicio: [
-        "",
-        [Validators.required, Validators.pattern("[0-9]{13}")]
-        ],
+      IdServicio: [0],
       Descripcion: [
         "",
         [Validators.required, Validators.minLength(4), Validators.maxLength(55)]
       ],
       Importe: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
       CantidadHoras: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
-      
-      // IdArticuloFamilia: ["", [Validators.required]],
-      // FechaAlta: [
-      //   "",
-      //   [
-      //     Validators.required,
-      //     Validators.pattern(
-      //       "(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[012])[-/](19|20)[0-9]{2}"
-      //     )
-      //   ]
-      // ],
       Activo: [true]
     });
 
@@ -102,8 +86,7 @@ export class ServiciosComponent implements OnInit {
   // Buscar segun los filtros, establecidos en FormReg
   Buscar() {
     this.SinBusquedasRealizadas = false;
-    this.servicioService.get()
-      .subscribe((res: any) => {
+    this.servicioService.get().subscribe((res: any) => {
         this.Lista = res.Lista;
         this.RegistrosTotal = res.RegistrosTotal;
       });

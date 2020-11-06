@@ -14,7 +14,7 @@ resourceUrl: string;
   constructor(private httpClient: HttpClient) {
     // la barra al final del resourse url es importante para los metodos que concatenan el id del recurso (GetById, Put)
     //this.resourceUrl = "https://pavii.ddns.net/api/articulos/";
-    this.resourceUrl = "https://bitgocba.duckdns.org/api/servicios/";
+    this.resourceUrl = "https://bitgocba.duckdns.org/api/servicios";
   }
 
   get() {
@@ -29,9 +29,6 @@ resourceUrl: string;
     return this.httpClient.post(this.resourceUrl, obj);
   }
 
-  put(Id: number, obj: Servicio) {
-    return this.httpClient.put(this.resourceUrl + Id, obj);
-  }
 
 
 }
