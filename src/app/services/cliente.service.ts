@@ -5,8 +5,8 @@ import {
   HttpErrorResponse,
   HttpParams
 } from "@angular/common/http";
-import { of } from "rxjs";
-import { Articulo } from "../models/articulo";
+import { Cliente} from "../models/cliente";
+import { Observable, of } from "rxjs";
 
 @Injectable({providedIn: "root"})
 
@@ -19,6 +19,10 @@ export class ClienteService {
     this.resourceUrl = "https://demo3151356.mockable.io/clientes";
   }
 
+  getClientes(): Observable<Cliente[]>{
+    return this.httpClient.get<Cliente[]>(this.resourceUrl);
+  }
+
   get() {
     let params = new HttpParams();
 
@@ -26,7 +30,7 @@ export class ClienteService {
   }
 
 
-  post(obj: Articulo) {
+  post(obj: Cliente) {
     return this.httpClient.post(this.resourceUrl, obj);
   }
 

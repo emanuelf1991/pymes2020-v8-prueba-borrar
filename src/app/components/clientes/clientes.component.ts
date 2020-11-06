@@ -107,11 +107,10 @@ Titulo = "Clientes";
   // Buscar segun los filtros, establecidos en FormReg
   Buscar() {
     this.SinBusquedasRealizadas = false;
-    this.clientesService.get().subscribe((res: any) => {
-        this.Lista = res.Lista;
-        this.RegistrosTotal = res.RegistrosTotal;
-      });
-  }
+    this.clientesService.getClientes().subscribe({
+      next: Cliente =>{ this.Lista = Cliente}
+     
+    });
 
   // Obtengo un registro especifico según el Id
   // BuscarPorId(Dto, AccionABMC) {
