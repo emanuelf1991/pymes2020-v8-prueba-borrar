@@ -21,7 +21,6 @@ import { ArticulosFamiliasComponent } from "./components/articulos-familias/arti
 import { ModalDialogComponent } from "./components/modal-dialog/modal-dialog.component";
 import { ServiciosComponent } from './components/servicios/servicios.component';
 import { ServicioService } from './services/servicio.service';
-import { ClienteComponent } from './components/cliente/cliente.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { ClienteService } from './services/cliente.service';
 
@@ -34,7 +33,6 @@ import { ClienteService } from './services/cliente.service';
     ArticulosFamiliasComponent,
     ModalDialogComponent,
     ServiciosComponent,
-    ClienteComponent,
     ClientesComponent,
   ],
   imports: [
@@ -55,7 +53,7 @@ import { ClienteService } from './services/cliente.service';
   entryComponents: [ModalDialogComponent],
   providers: [
      {provide: APP_BASE_HREF, useValue : '/' },
-    { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true, providers: [ServicioService], providers: [ClienteService] }
+    { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true, providers: [ServicioService] }
   ],
   bootstrap: [AppComponent]
 })

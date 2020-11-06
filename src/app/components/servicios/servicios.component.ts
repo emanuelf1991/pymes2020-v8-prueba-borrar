@@ -1,25 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ModalDialogService } from "../../services/modal-dialog.service";
-import { Servicio} from "../../models/servicio"
-import { ServicioService } from '../../services/servicio.service';
+import { ServicioService } from "../../services/servicio.service";
+import { Servicio } from "../../models/servicio";
 
 @Component({
-  selector: 'app-servicios',
-  templateUrl: './servicios.component.html',
-  styleUrls: ['./servicios.component.css']
+  selector: "app-servicios",
+  templateUrl: "./servicios.component.html",
+  styleUrls: ["./servicios.component.css"]
 })
 export class ServiciosComponent implements OnInit {
-    Titulo = "Servicios";
+  Titulo = "Servicios";
   TituloAccionABMC = {
     A: "(Agregar)",
     B: "(Eliminar)",
     M: "(Modificar)",
     C: "(Consultar)",
     L: "(Listado)"
-    };
-
-      AccionABMC = "L"; // inicialmente inicia en el listado de articulos (buscar con parametros)
+  };
+  AccionABMC = "L"; // inicialmente inicia en el listado de articulos (buscar con parametros)
   Mensajes = {
     SD: " No se encontraron registros...",
     RD: " Revisar los datos ingresados..."
@@ -27,57 +26,64 @@ export class ServiciosComponent implements OnInit {
 
   Lista: Servicio[] = [];
   RegistrosTotal: number;
-  //Familias: ArticuloFamilia[] = [];
+  // Familias: ArticuloFamilia[] = [];
   SinBusquedasRealizadas = true;
 
   Pagina = 1; // inicia pagina 1
 
   // opciones del combo activo
   OpcionesActivo = [
-    { Id: null, Nombre: "" },
-    { Id: true, Nombre: "SI" },
-    { Id: false, Nombre: "NO" }
+    { Id: null, descripcion: "" },
+    { Id: true, descripcion: "SI" },
+    { Id: false, descripcion: "NO" }
   ];
 
   FormFiltro: FormGroup;
   FormReg: FormGroup;
   submitted = false;
 
-
   constructor(
     public formBuilder: FormBuilder,
+    //private articulosService: MockArticulosService,
+    //private articulosFamiliasService: MockArticulosFamiliasService,
+    //private articulosService: ArticulosService,
+    //private articulosFamiliasService: ArticulosFamiliasService,
     private modalDialogService: ModalDialogService,
     private servicioService: ServicioService
   ) {}
 
   ngOnInit() {
-  this.FormFiltro = this.formBuilder.group({
-      Descripcion: [""],
+    this.FormFiltro = this.formBuilder.group({
+      descripcion: [""],
       Activo: [null]
     });
     this.FormReg = this.formBuilder.group({
-      IdServicio: [0],
-      Descripcion: [
+      idservicio: [0],
+      descripcion: [
         "",
         [Validators.required, Validators.minLength(4), Validators.maxLength(55)]
       ],
-      Importe: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
-      CantidadHoras: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
+      importe: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
+      cantidadhoras: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
+  
+      //idservicioFamilia: ["", [Validators.required]],
+
+      
       Activo: [true]
     });
 
-   // this.GetFamiliasArticulos();
+    // this.GetFamiliasArticulos();
   }
 
-  // GetFamiliasArticulos() {
-  //   this.articulosFamiliasService.get().subscribe((res: ArticuloFamilia[]) => {
-  //     this.Familias = res;
-  //   });
-  // }
+  //GetFamiliasArticulos() {
+  //this.articulosFamiliasService.get().subscribe((res: ArticuloFamilia[]) => {
+  // this.Familias = res;
+  //});
+  //}
 
   Agregar() {
     this.AccionABMC = "A";
-    this.FormReg.reset({ Activo: true });
+    this.FormReg.reset();
     this.submitted = false;
     //this.FormReg.markAsPristine();
     this.FormReg.markAsUntouched();
@@ -87,45 +93,10 @@ export class ServiciosComponent implements OnInit {
   Buscar() {
     this.SinBusquedasRealizadas = false;
     this.servicioService.get().subscribe((res: any) => {
-        this.Lista = res.Lista;
-        this.RegistrosTotal = res.RegistrosTotal;
-      });
+      this.Lista = res.Lista;
+      this.RegistrosTotal = res.RegistrosTotal;
+    });
   }
-
-  // Obtengo un registro especifico según el Id
-  // BuscarPorId(Dto, AccionABMC) {
-  //   window.scroll(0, 0); // ir al incio del scroll
-
-  //   this.articulosService.getById(Dto.IdArticulo).subscribe((res: any) => {
-  //     this.FormReg.patchValue(res);
-
-  //     //formatear fecha de  ISO 8061 a string dd/MM/yyyy
-  //     var arrFecha = res.FechaAlta.substr(0, 10).split("-");
-  //     this.FormReg.controls.FechaAlta.patchValue(
-  //       arrFecha[2] + "/" + arrFecha[1] + "/" + arrFecha[0]
-  //     );
-
-  //     this.AccionABMC = AccionABMC;
-  //   });
-  // }
-
-  // Consultar(Dto) {
-  //   this.BuscarPorId(Dto, "C");
-  // }
-
-  // // comienza la modificacion, luego la confirma con el metodo Grabar
-  // Modificar(Dto) {
-  //   if (!Dto.Activo) {
-  //     this.modalDialogService.Alert(
-  //       "No puede modificarse un registro Inactivo."
-  //     );
-  //     return;
-  //   }
-  //   this.submitted = false;
-  //   this.FormReg.markAsPristine();
-  //   this.FormReg.markAsUntouched();
-  //   this.BuscarPorId(Dto, "M");
-  // }
 
   // grabar tanto altas como modificaciones
   Grabar() {
@@ -148,8 +119,8 @@ export class ServiciosComponent implements OnInit {
     //   ).toISOString();
 
     // agregar post
-    if (itemCopy.IdServicio == 0 || itemCopy.IdServicio == null) {
-      itemCopy.IdServicio = 0;
+    if (itemCopy.idservicio == 0 || itemCopy.idservicio == null) {
+      itemCopy.idservicio = 0;
       this.servicioService.post(itemCopy).subscribe((res: any) => {
         this.Volver();
         this.modalDialogService.Alert("Registro agregado correctamente.");
@@ -158,31 +129,16 @@ export class ServiciosComponent implements OnInit {
     } else {
       // modificar put
       // this.articulosService
-      //   .put(itemCopy.IdArticulo, itemCopy)
-      //   .subscribe((res: any) => {
-      //     this.Volver();
-      //     this.modalDialogService.Alert("Registro modificado correctamente.");
-      //     this.Buscar();
-      //   });
+      // .put(itemCopy.IdArticulo, itemCopy)
+      //.subscribe((res: any) => {
+      // this.Volver();
+      //this.modalDialogService.Alert('Registro modificado correctamente.');
+      //this.Buscar();
+      //});
     }
   }
 
   // representa la baja logica
-  // ActivarDesactivar(Dto) {
-  //   this.modalDialogService.Confirm(
-  //     "Esta seguro de " +
-  //       (Dto.Activo ? "desactivar" : "activar") +
-  //       " este registro?",
-  //     undefined,
-  //     undefined,
-  //     undefined,
-  //     () =>
-  //       this.articulosService
-  //         .delete(Dto.IdArticulo)
-  //         .subscribe((res: any) => this.Buscar()),
-  //     null
-  //   );
-  // }
 
   // Volver desde Agregar/Modificar
   Volver() {
@@ -193,11 +149,11 @@ export class ServiciosComponent implements OnInit {
     this.modalDialogService.Alert("Sin desarrollar...");
   }
 
-  // GetArticuloFamiliaNombre(Id) {
-  //   var ArticuloFamilia = this.Familias.filter(
-  //     x => x.IdArticuloFamilia === Id
-  //   )[0];
-  //   if (ArticuloFamilia) return ArticuloFamilia.Nombre;
-  //   else return "";
+  // GetArticuloFamiliaNombre(Id){
+  // var ArticuloFamilia = this.Familias.filter(x => x.IdArticuloFamilia === Id)[0];
+  //if (ArticuloFamilia)
+  //   return ArticuloFamilia.Nombre;
+  //else
+  // return "";
   //}
 }
