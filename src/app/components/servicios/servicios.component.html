@@ -1,7 +1,7 @@
 <h3>{{Titulo}} <small>{{TituloAccionABMC[AccionABMC]}}</small></h3>
 
 <!-- Formulario Filtro de busqueda, se ve cuando la accion es Listado(busqueda/listado)-->
-<form name="FormFiltro" [formGroup]='FormFiltro' class="bg-light" *ngIf="AccionABMC == 'L'" >
+<!-- <form name="FormFiltro" [formGroup]='FormFiltro' class="bg-light" *ngIf="AccionABMC == 'L'" >
 	<div class="form-group row">
 		<label class="col-form-label col-sm-2 col-sm-offset-1">
             Nombre:
@@ -19,7 +19,7 @@
             <option>            
           </select>
 			</div>
-		</div>
+		</div> -->
 		<!-- Botones -->
 		<div class="row justify-content-center">
 			<button type="button" class="btn btn-primary" (click)="Buscar()">
@@ -31,32 +31,27 @@
             Agregar
         </button>
 		</div>
-</form>
+<!-- </form> -->
 
 <!-- Tabla de resutados de busqueda y Paginador-->
 <div id="divTablaResultados" *ngIf="AccionABMC == 'L' && Lista?.length > 0">
 	<table class="table table-bordered table-striped">
 		<thead>
 			<tr>
-				<th class="text-center">Nombre</th>
-				<th class="text-center">Precio</th>
-				<th class="text-center">Stock</th>
-				<th class="text-center">Fecha de Alta</th>
-				<th>Familia</th>
-				<th class="text-center">Activo</th>
-				<th class="text-center text-nowrap">Acciones</th>
+				<th class="text-center">Id Servicio</th>
+				<th class="text-center">Descripción</th>
+				<th class="text-center">Importe</th>
+				<th class="text-center">Cantidad de Horas</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let dto of Lista">
-				<td>{{dto.Nombre | uppercase}}</td>
+				<td>{{dto.idservicio }}</td>
+        <td>{{dto.descripcion | uppercase}}</td>
         <td class="text-right">{{dto.Precio | currency:'$'}}</td>
 				<td class="text-right">{{dto.Stock}}</td>
-				<td>{{dto.FechaAlta| date:'dd/MM/yyyy'}}</td>
-				<td>{{GetArticuloFamiliaNombre(dto.IdArticuloFamilia)}}</td>
-				<td>{{dto.Activo ? 'SI' : 'NO'}}</td>
 				<td class="text-center text-nowrap">
-					<button type="button" class="btn btn-sm btn-outline-primary" title="Ver" (click)="Consultar(dto)">
+					<!-- <button type="button" class="btn btn-sm btn-outline-primary" title="Ver" (click)="Consultar(dto)">
                     <span class="fas fa-eye"></span>
                 </button>
 					<button type="button" class="btn btn-sm btn-outline-primary" title="Modificar" (click)="Modificar(dto)">
@@ -66,7 +61,7 @@
                     title="{{dto.Activo ? 'Desactivar':'Activar'}}" (click)="ActivarDesactivar(dto)">
                     <span class="fas fa-{{dto.Activo ? 'times':'check'}}"></span>
                 </button>
-				</td>
+				</td> -->
 			</tr>
 		</tbody>
 	</table>
