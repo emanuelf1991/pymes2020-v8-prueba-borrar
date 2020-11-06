@@ -6,13 +6,14 @@ import { ArticulosFamiliasService } from "../../services/articulos-familias.serv
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ModalDialogService } from "../../services/modal-dialog.service";
 
+
 @Component({
-  selector: "app-articulos",
-  templateUrl: "./articulos.component.html",
-  styleUrls: ["./articulos.component.css"]
+  selector: 'app-clientes',
+  templateUrl: './clientes.component.html',
+  styleUrls: ['./clientes.component.css']
 })
-export class ArticulosComponent implements OnInit {
-  Titulo = "Articulos";
+export class ClientesComponent implements OnInit {
+Titulo = "Clientes";
   TituloAccionABMC = {
     A: "(Agregar)",
     B: "(Eliminar)",

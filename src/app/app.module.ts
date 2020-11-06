@@ -21,6 +21,9 @@ import { ArticulosFamiliasComponent } from "./components/articulos-familias/arti
 import { ModalDialogComponent } from "./components/modal-dialog/modal-dialog.component";
 import { ServiciosComponent } from './components/servicios/servicios.component';
 import { ServicioService } from './services/servicio.service';
+import { ClienteComponent } from './components/cliente/cliente.component';
+import { ClientesComponent } from './components/clientes/clientes.component';
+import { ClienteService } from './services/cliente.service';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,8 @@ import { ServicioService } from './services/servicio.service';
     ArticulosFamiliasComponent,
     ModalDialogComponent,
     ServiciosComponent,
+    ClienteComponent,
+    ClientesComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,8 @@ import { ServicioService } from './services/servicio.service';
       { path: 'inicio', component: InicioComponent },
       { path: 'articulos', component: ArticulosComponent },
       { path: 'articulosfamilias', component: ArticulosFamiliasComponent },
-      { path: 'servicios', component: ServiciosComponent}
+      { path: 'servicios', component: ServiciosComponent},
+      { path: 'clientes', component: ClientesComponent}
     ]),
     NgbPaginationModule,
     NgbModalModule,
@@ -49,7 +55,7 @@ import { ServicioService } from './services/servicio.service';
   entryComponents: [ModalDialogComponent],
   providers: [
      {provide: APP_BASE_HREF, useValue : '/' },
-    { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true, providers: [ServicioService] }
+    { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true, providers: [ServicioService], providers: [ClienteService] }
   ],
   bootstrap: [AppComponent]
 })
